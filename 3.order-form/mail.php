@@ -1,17 +1,6 @@
 <?php
-    $mail = new phpMailer();
+$to = $_POST['email'];
+$subject = 'order';
+$message = 'this is a test';
+$from = 'example.example.com';
 
-    $mail->isSMTP();
-    $mail->charset = 'utf-8';
-
-    $mail->Host = "mail.lennExample.com";
-    $mail->SMTPdebug = 0;
-    $mail->SMTPAuth = true;
-    $mail->Port = 25;
-    $mail->Username = 'username';
-    $mail->Password = 'password';
-
-    $mail->isHTML(true);
-    $mail->Subject = 'order';
-    $mail->body = '';
-?>

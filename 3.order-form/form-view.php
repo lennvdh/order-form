@@ -177,26 +177,33 @@
             Express delivery (+ 5 EUR) 
         </label>
             
-        <button type="submit" name="submit" class="btn btn-primary">Order!
-
-        </button>
+        <button type="submit" name="submit" class="btn btn-primary">Order!</button>
+        <?php
+        $subject = 'order';
+        $message = 'this is a test';
+        $from = 'lenn.vanderheijden@gmail&.com';
+        if(isset($_POST['submit'])){
+            if (mail('lenn.vanderheijden@gmail.com', $subject, $message, $from )) {
+                echo 'Your mail&& is send';
+            } else {
+                echo 'your mail is not send';
+            }
+        }
+        ?>
     </form>
 
     <footer>You already ordered <strong>&euro; <?php echo totalPrice($products); ?></strong> in food and drinks.</footer>
     <?php
-        //function time(){
-            $currentTime = date("G:i:s");
-            $timeExpectedNormalDeliv = strtotime("+2 hours", strtotime($currentTime));
-            $timeExpectedExpress = strtotime("+45 minutes", strtotime($currentTime));
-            $endTimeExpressDelivery = date("G:i:s", $timeExpectedExpress);
-            $endTime = date("G:i:s", $timeExpectedNormalDeliv);
-            if(isset($_POST['express_delivery'])){
-                echo("time expected of delivery ".$endTimeExpressDelivery);
-            }elseif(isset($_POST['submit'])){
-                echo("time expected of delivery ".$endTime);
-            } 
-        //}
-        //time();
+        $currentTime = date("G:i:s");
+        $timeExpectedNormalDeliv = strtotime("+2 hours", strtotime($currentTime));
+        $timeExpectedExpress = strtotime("+45 minutes", strtotime($currentTime));
+        $endTimeExpressDelivery = date("G:i:s", $timeExpectedExpress);
+        $endTime = date("G:i:s", $timeExpectedNormalDeliv);
+        if(isset($_POST['express_delivery'])){
+            echo("time expected of delivery ".$endTimeExpressDelivery);
+        }elseif(isset($_POST['submit'])){
+            echo("time expected of delivery ".$endTime);
+        }
     ?>
 </div>
 
