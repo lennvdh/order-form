@@ -32,6 +32,26 @@ if(isset($_GET['food']) && (int)$_GET['food'] === 0){
         ['name' => 'Ice-tea', 'price' => 3],
     ];
 }
-$totalValue = 0;
+function totalPrice($products){
+    $totalValue = 0;
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        if(!isset($_COOKIE['totalValue'])) {
+            foreach($_POST['products'] as $i => $product) {
+                $totalValue += (float)$products[$i]['price'];
+                $totalValue = (float)$totalValue;
+            }
+            if(!empty($_POST['express_delivery'])){
+                $totalValue += (float)$_POST['express_delivery'];
+                $totalValue = (float)$totalValue;
+            }
+            setcookie('totalValue', (string)$totalValue, time() + 86400);
+        }
+    }
+    return number_format($totalValue, 2);
+}
+
+
 
 require 'form-view.php';
+//require 'mail.php'
+?>

@@ -23,7 +23,6 @@
         </ul>
     </nav>
     <form method="post">
-
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="email">E-mail:</label>
@@ -34,7 +33,7 @@
                             if (isset($_POST['email'])){ 
                                 $email = $_POST['email'];
                                 if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-                                    echo("VALID ".$email);
+                                    echo($email);
                                 }else{
                                     echo($email);
                                 }
@@ -51,7 +50,12 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="street">Street:</label>
-                    <input type="text" name="street" id="street" class="form-control" value="                
+                        <?php
+                            if(empty($_POST['street'])){
+                                echo("this field is required");
+                            }
+                        ?>
+                    <input type="text" name="street" id="street" required class="form-control" value="                
                     <?php
                         if ($_SERVER['REQUEST_METHOD'] == "POST"){
                             if (isset($_POST['street'])){ 
@@ -71,7 +75,17 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="streetnumber">Street number:</label>
-                    <input type="text" id="streetnumber" name="streetnumber" class="form-control" value="    
+                    <?php
+                        if(empty($_POST['streetnumber'])){
+                            echo("This field is required");
+                        };
+                        if(isset($_POST['streetnumber'])){
+                            if(!is_numeric($_POST['streetnumber'])){
+                                echo('unvallid');
+                            }
+                        };
+                    ?>
+                    <input type="text" id="streetnumber" name="streetnumber" required class="form-control" value="    
                     <?php
                         if ($_SERVER['REQUEST_METHOD'] == "POST"){
                             if (isset($_POST['streetnumber'])){ 
@@ -93,7 +107,12 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="city">City:</label>
-                    <input type="text" id="city" name="city" class="form-control" value="                    
+                    <?php
+                        if(empty($_POST['city'])){
+                            echo("This field is required");
+                        };
+                    ?>
+                    <input type="text" id="city" name="city" required class="form-control" value="                    
                     <?php
                         if ($_SERVER['REQUEST_METHOD'] == "POST"){
                             if (isset($_POST['city'])){ 
@@ -112,11 +131,21 @@
                     ?>">
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="zipcode">Zipcode</label>
-                    <input type="text" id="zipcode" name="zipcode" class="form-control" value="
+                    <label for="zipcode">Zipcode:</label>
+                    <?php
+                            if(empty($_POST['zipcode'])){
+                                echo("This field is required");
+                            }
+                            if(isset($_POST['zipcode'])){
+                                if(!is_numeric($_POST['zipcode'])){
+                                    echo('unvallid');
+                                }
+                            }
+                    ?>
+                    <input type="text" id="zipcode" name="zipcode" required class="form-control" value="
                     <?php
                         if ($_SERVER['REQUEST_METHOD'] == "POST"){
-                            if (isset($_POST['zipcode'])){ 
+                            if (isset($_POST['zipcode'])){
                                 $zipcode = $_POST['zipcode'];
                                 if(is_numeric($zipcode)){
                                     echo($zipcode);
@@ -148,21 +177,26 @@
             Express delivery (+ 5 EUR) 
         </label>
             
-        <button type="submit" name="submit" class="btn btn-primary">Order!</button>
+        <button type="submit" name="submit" class="btn btn-primary">Order!
+
+        </button>
     </form>
 
-    <footer>You already ordered <strong>&euro; <?php echo $totalValue ?></strong> in food and drinks.</footer>
-    <?php 
-        $currentTime = date("G:i:s");
-        $timeExpectedNormalDeliv = strtotime("+2 hours", strtotime($currentTime));
-        $timeExpectedExpress = strtotime("+45 minutes", strtotime($currentTime));
-        $endTimeExpressDelivery = date("G:i:s", $timeExpectedExpress);
-        $endTime = date("G:i:s", $timeExpectedNormalDeliv);
-        if(isset($_POST['express_delivery'])){
-            echo("time expected of delivery ".$endTimeExpressDelivery);
-        }elseif(isset($_POST['submit'])){
-            echo("time expected of delivery ".$endTime);
-        }
+    <footer>You already ordered <strong>&euro; <?php echo totalPrice($products); ?></strong> in food and drinks.</footer>
+    <?php
+        //function time(){
+            $currentTime = date("G:i:s");
+            $timeExpectedNormalDeliv = strtotime("+2 hours", strtotime($currentTime));
+            $timeExpectedExpress = strtotime("+45 minutes", strtotime($currentTime));
+            $endTimeExpressDelivery = date("G:i:s", $timeExpectedExpress);
+            $endTime = date("G:i:s", $timeExpectedNormalDeliv);
+            if(isset($_POST['express_delivery'])){
+                echo("time expected of delivery ".$endTimeExpressDelivery);
+            }elseif(isset($_POST['submit'])){
+                echo("time expected of delivery ".$endTime);
+            } 
+        //}
+        //time();
     ?>
 </div>
 
